@@ -5,6 +5,11 @@ Licensed under the MIT license.
 
 */
 
+/*
+	Polo Ornelas fork - see 
+	https://github.com/warstories/flot
+*/
+
 // first an inline dependency, jquery.colorhelpers.js, we inline it here
 // for convenience
 
