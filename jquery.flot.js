@@ -2700,9 +2700,13 @@ Licensed under the MIT license.
                 if (s.label) {
                     label = lf ? lf(s.label, s) : s.label;
                     if (label) {
+                    	var legendColor = s.color;
+                    	if ( s.overrideLegendColor != undefined) {
+                    		legendColor = s.overrideLegendColor;
+                    	}
                         entries.push({
                             label: label,
-                            color: s.color
+                            color: legendColor
                         });
                     }
                 }
