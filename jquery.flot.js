@@ -537,11 +537,16 @@ Licensed under the MIT license.
                     alignTicksWithAxis: null, // axis number or null for no sync
                     tickDecimals: null, // no. of decimals, null means auto
                     tickSize: null, // number or [number, "unit"]
-                    minTickSize: null // number or [number, "unit"]
+                    minTickSize: null, // number or [number, "unit"],
+                    dashColor: "black", // dash color, color or rgb as string '#ff0000'
+                    dashSize: 5 //dash size
                 },
                 yaxis: {
                     autoscaleMargin: 0.02,
-                    position: "left" // or "right"
+                    position: "left", // or "right"
+                    dashColor: "black", // dash color, color or rgb as string '#ff0000'
+                    dashSize: 5 //dash size
+
                 },
                 xaxes: [],
                 yaxes: [],
@@ -2046,13 +2051,18 @@ Licensed under the MIT license.
                     ctx.lineTo(x + xoff, y + yoff);
                     ctx.stroke();
                 }
+               
+                //var dashSize = 5;
+                //var dashColor = "black";
 
                 // draw ticks
 
-                ctx.strokeStyle = axis.options.tickColor;
+                //ctx.strokeStyle = axis.options.tickColor;
 
-                ctx.beginPath();
+                //ctx.beginPath();
                 for (i = 0; i < axis.ticks.length; ++i) {
+                    ctx.strokeStyle = axis.options.tickColor;
+                    ctx.beginPath();
                     var v = axis.ticks[i].v;
 
                     xoff = yoff = 0;
@@ -2066,14 +2076,14 @@ Licensed under the MIT license.
 
                     if (axis.direction == "x") {
                         x = axis.p2c(v);
-                        yoff = t == "full" ? -plotHeight : t;
+                        yoff = t == "full" ? - (plotHeight ) : t;
 
                         if (axis.position == "top")
                             yoff = -yoff;
                     }
                     else {
-                        y = axis.p2c(v);
-                        xoff = t == "full" ? -plotWidth : t;
+                        y = axis.p2c(v) ;
+                        xoff = t == "full" ? -(plotWidth) : t;
 
                         if (axis.position == "left")
                             xoff = -xoff;
@@ -2088,9 +2098,30 @@ Licensed under the MIT license.
 
                     ctx.moveTo(x, y);
                     ctx.lineTo(x + xoff, y + yoff);
+                    
+                    ctx.stroke();
+                    
+                    //draw tick dash
+                    var dashSize = axis.options.dashSize;
+                    var dashColor = axis.options.dashColor;
+
+                    var backLW = ctx.lineWidth;
+                    ctx.beginPath();
+                    ctx.lineWidth = 1;
+                    ctx.strokeStyle = dashColor;
+                    ctx.moveTo(x, y);
+                    if ( axis.direction == "x" )
+                    {  ctx.lineTo(x, y + dashSize); }
+                    else
+                    {  ctx.lineTo(x - dashSize, y); }
+                    ctx.stroke();
+                    // roll back changes
+                    ctx.moveTo(x + xoff, y + yoff);
+                    ctx.lineWidth = backLW;
+                    
                 }
 
-                ctx.stroke();
+                //ctx.stroke();
             }
 
 
